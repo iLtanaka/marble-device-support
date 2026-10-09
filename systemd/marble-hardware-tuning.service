@@ -1,0 +1,11 @@
+[Unit]
+Description=Xiaomi Poco F5 (marble) Hardware Performance Tuning
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/marble-hardware-tuning.sh
+
+[Install]
+WantedBy=multi-user.target

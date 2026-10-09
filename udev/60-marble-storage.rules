@@ -1,0 +1,1 @@
+ACTION=="add|change", KERNEL=="sda", ATTR{queue/scheduler}="none"

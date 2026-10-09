@@ -1,0 +1,8 @@
+# Adreno 725: 220 MHz cannot hold 120 Hz at 1080x2400 on the first frames after
+# idle (simple_ondemand ramps too late). 324 MHz is the lowest stock OPP that does.
+ACTION=="add", SUBSYSTEM=="devfreq", KERNEL=="3d00000.gpu", ATTR{min_freq}="324000000"
+
+# Mainline runtime-suspends the GPU (full GMU slumber) after 66 ms idle, and the
+# next frame then waits 45-90 ms for it to wake: any pause in a gesture becomes
+# a visible stutter. Keep it awake for 500 ms after the last submit.
+ACTION=="add", SUBSYSTEM=="platform", KERNEL=="3d00000.gpu", ATTR{power/autosuspend_delay_ms}="500"

@@ -1,0 +1,9 @@
+[Unit]
+Description=marble: CPU frequency floor for the compositor (input latency)
+
+[Service]
+ExecStart=/usr/local/sbin/marble-compositor-boost
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Xiaomi Poco F5 (marble) touch input CPU boost
+
+[Service]
+ExecStart=/usr/libexec/marble-touchboost
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

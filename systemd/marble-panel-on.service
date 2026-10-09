@@ -1,0 +1,12 @@
+[Unit]
+Description=marble: cycle the panel so it lights up
+After=systemd-modules-load.service systemd-udev-trigger.service
+Before=display-manager.service phrog.service greetd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/marble-panel-on
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
