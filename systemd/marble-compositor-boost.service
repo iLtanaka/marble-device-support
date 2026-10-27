@@ -2,7 +2,7 @@
 Description=marble: CPU frequency floor for the compositor (input latency)
 
 [Service]
-ExecStart=/usr/local/sbin/marble-compositor-boost
+ExecStart=/usr/libexec/marble-compositor-boost
 Restart=on-failure
 
 [Install]

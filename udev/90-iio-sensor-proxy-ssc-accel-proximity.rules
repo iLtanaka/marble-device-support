@@ -1,0 +1,9 @@
+# iio-sensor-proxy only tags the SSC hubs with light + compass upstream; the
+# accelerometer and the proximity sensor are behind the same fastrpc nodes and
+# have to be asked for explicitly. Without this rule monitor-sensor reports
+# only light and compass on marble.
+# See https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/commit/a9d7ff148cd4fa5e40b23b189894b36dd81f51df
+ACTION=="remove", GOTO="iio_sensor_proxy_end"
+SUBSYSTEM=="misc", KERNEL=="fastrpc-adsp*", ENV{IIO_SENSOR_PROXY_TYPE}+="ssc-accel ssc-proximity"
+SUBSYSTEM=="misc", KERNEL=="fastrpc-sdsp*", ENV{IIO_SENSOR_PROXY_TYPE}+="ssc-accel ssc-proximity"
+LABEL="iio_sensor_proxy_end"

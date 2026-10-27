@@ -12,7 +12,8 @@ Provides userland configuration, ALSA UCM2 audio profiles, udev rules, performan
 * **udev rules**:
   * `60-marble-storage.rules`: UFS storage scheduler tuning.
   * `61-marble-gpu.rules`: Adreno 725 runtime autosuspend delay and devfreq floor.
-  * `81-libssc-xiaomi-marble.rules`: Qualcomm Sensors Core (SSC/SLPI) device tagging for `iio-sensor-proxy`.
+  * `81-libssc-xiaomi-marble.rules`: accelerometer mount matrix for the SSC sensors.
+  * `90-iio-sensor-proxy-ssc-accel-proximity.rules`: asks `iio-sensor-proxy` for the accelerometer and the proximity sensor (upstream only enables light and compass).
 * **Services & Daemons**:
   * `marble-touchboost`: Low-overhead C daemon monitoring `/dev/input` to boost CPU frequency floor during active touch interaction, ensuring stable 120 Hz compositor response.
   * `marble-compositor-boost`: Applies `uclamp.min` (512) to wayland compositors (`phoc`, `kwin_wayland`, `gnome-shell`).
@@ -44,10 +45,16 @@ sudo make install PREFIX=/usr
 ### Enabling Services (systemd)
 
 ```bash
+sudo systemctl enable marble-panel-on.service
 sudo systemctl enable marble-hardware-tuning.service
 sudo systemctl enable marble-touchboost.service
 sudo systemctl enable marble-compositor-boost.service
 ```
+
+`marble-panel-on.service` is required on any system that boots without an
+initramfs: the msm DRM driver lights the panel only after a disable/enable
+cycle, so without it the screen stays black even though the system is up.
+It has to run before the display manager, which the unit orders itself.
 
 ---
 

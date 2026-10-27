@@ -21,9 +21,9 @@ install: all
 	# Binary and helper scripts
 	install -d $(DESTDIR)$(PREFIX)/libexec
 	install -m 755 $(BIN) $(DESTDIR)$(PREFIX)/libexec/
-	install -m 755 scripts/marble-hardware-tuning.sh $(DESTDIR)$(PREFIX)/libexec/
-	install -m 755 scripts/marble-panel-on.sh $(DESTDIR)$(PREFIX)/libexec/
-	install -m 755 scripts/marble-compositor-boost.sh $(DESTDIR)$(PREFIX)/libexec/
+	install -m 755 scripts/marble-hardware-tuning.sh $(DESTDIR)$(PREFIX)/libexec/marble-hardware-tuning.sh
+	install -m 755 scripts/marble-panel-on.sh $(DESTDIR)$(PREFIX)/libexec/marble-panel-on
+	install -m 755 scripts/marble-compositor-boost.sh $(DESTDIR)$(PREFIX)/libexec/marble-compositor-boost
 
 	# ALSA UCM2 profiles
 	install -d $(DESTDIR)$(PREFIX)/share/alsa/ucm2/conf.d/sm8450
@@ -36,6 +36,7 @@ install: all
 	install -m 644 udev/60-marble-storage.rules $(DESTDIR)$(PREFIX)/lib/udev/rules.d/
 	install -m 644 udev/61-marble-gpu.rules $(DESTDIR)$(PREFIX)/lib/udev/rules.d/
 	install -m 644 udev/81-libssc-xiaomi-marble.rules $(DESTDIR)$(PREFIX)/lib/udev/rules.d/
+	install -m 644 udev/90-iio-sensor-proxy-ssc-accel-proximity.rules $(DESTDIR)$(PREFIX)/lib/udev/rules.d/
 
 	# systemd units
 	install -d $(DESTDIR)$(PREFIX)/lib/systemd/system

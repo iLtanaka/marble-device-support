@@ -5,7 +5,7 @@ Before=display-manager.service phrog.service greetd.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/sbin/marble-panel-on
+ExecStart=/usr/libexec/marble-panel-on
 RemainAfterExit=yes
 
 [Install]
