@@ -1,0 +1,13 @@
+[Unit]
+Description=marble: give the WCN6855 Wi-Fi a stable MAC address
+Before=NetworkManager.service iwd.service systemd-networkd.service wpa_supplicant.service
+Wants=network-pre.target
+Before=network-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/marble-wifi-mac
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

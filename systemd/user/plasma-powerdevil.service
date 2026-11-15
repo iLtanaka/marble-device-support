@@ -1,0 +1,23 @@
+# marble: override of Plasma's /usr/lib/systemd/user/plasma-powerdevil.service
+# (installed to /etc/systemd/user, which takes precedence).
+#
+# Upstream orders powerdevil after plasma-core.target, i.e. after plasmashell.
+# Plasma Mobile's quick settings brightness slider asks powerdevil for the
+# brightness once, when the shell starts; powerdevil is not on the bus yet
+# ("Getting brightness failed: ... The name is not activatable"), so the
+# slider stays hidden for the whole session. Start powerdevil before the
+# shell instead. A drop-in cannot remove an After= dependency, hence the
+# full override. Drop it once Plasma retries or reorders the units.
+[Unit]
+Description=Powerdevil
+PartOf=graphical-session.target
+After=plasma-kwin_wayland.service
+Before=plasma-plasmashell.service
+
+[Service]
+ExecStart=/usr/lib/org_kde_powerdevil
+Type=dbus
+BusName=org.kde.Solid.PowerManagement
+TimeoutStopSec=5sec
+Slice=background.slice
+Restart=always

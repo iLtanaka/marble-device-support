@@ -1,4 +1,5 @@
 PREFIX ?= /usr
+SYSCONFDIR ?= /etc
 DESTDIR ?=
 
 CC ?= gcc
@@ -24,6 +25,8 @@ install: all
 	install -m 755 scripts/marble-hardware-tuning.sh $(DESTDIR)$(PREFIX)/libexec/marble-hardware-tuning.sh
 	install -m 755 scripts/marble-panel-on.sh $(DESTDIR)$(PREFIX)/libexec/marble-panel-on
 	install -m 755 scripts/marble-compositor-boost.sh $(DESTDIR)$(PREFIX)/libexec/marble-compositor-boost
+	install -m 755 scripts/marble-wifi-mac.sh $(DESTDIR)$(PREFIX)/libexec/marble-wifi-mac
+	install -m 755 scripts/marble-bt-addr.sh $(DESTDIR)$(PREFIX)/libexec/marble-bt-addr
 
 	# ALSA UCM2 profiles
 	install -d $(DESTDIR)$(PREFIX)/share/alsa/ucm2/conf.d/sm8450
@@ -38,18 +41,30 @@ install: all
 	install -m 644 udev/81-libssc-xiaomi-marble.rules $(DESTDIR)$(PREFIX)/lib/udev/rules.d/
 	install -m 644 udev/90-iio-sensor-proxy-ssc-accel-proximity.rules $(DESTDIR)$(PREFIX)/lib/udev/rules.d/
 
+	# udev hwdb (run systemd-hwdb update afterwards)
+	install -d $(DESTDIR)$(PREFIX)/lib/udev/hwdb.d
+	install -m 644 udev/hwdb.d/61-marble-touchscreen.hwdb $(DESTDIR)$(PREFIX)/lib/udev/hwdb.d/
+
 	# systemd units
 	install -d $(DESTDIR)$(PREFIX)/lib/systemd/system
 	install -m 644 systemd/marble-hardware-tuning.service $(DESTDIR)$(PREFIX)/lib/systemd/system/
 	install -m 644 systemd/marble-touchboost.service $(DESTDIR)$(PREFIX)/lib/systemd/system/
 	install -m 644 systemd/marble-panel-on.service $(DESTDIR)$(PREFIX)/lib/systemd/system/
 	install -m 644 systemd/marble-compositor-boost.service $(DESTDIR)$(PREFIX)/lib/systemd/system/
+	install -m 644 systemd/marble-wifi-mac.service $(DESTDIR)$(PREFIX)/lib/systemd/system/
+	install -m 644 systemd/marble-bt-addr.service $(DESTDIR)$(PREFIX)/lib/systemd/system/
 
 	# systemd drop-ins
 	install -d $(DESTDIR)$(PREFIX)/lib/systemd/system/hexagonrpcd-sdsp.service.d
 	install -m 644 systemd/drop-ins/hexagonrpcd-sdsp.service.d/60-marble-registry.conf $(DESTDIR)$(PREFIX)/lib/systemd/system/hexagonrpcd-sdsp.service.d/
 	install -d $(DESTDIR)$(PREFIX)/lib/systemd/system/iio-sensor-proxy.service.d
 	install -m 644 systemd/drop-ins/iio-sensor-proxy.service.d/60-marble-sensors.conf $(DESTDIR)$(PREFIX)/lib/systemd/system/iio-sensor-proxy.service.d/
+	install -d $(DESTDIR)$(PREFIX)/lib/systemd/system/ModemManager.service.d
+	install -m 644 systemd/drop-ins/ModemManager.service.d/60-marble-wait-qrtr.conf $(DESTDIR)$(PREFIX)/lib/systemd/system/ModemManager.service.d/
+
+	# Plasma user unit override (must shadow /usr/lib/systemd/user, so it goes to SYSCONFDIR)
+	install -d $(DESTDIR)$(SYSCONFDIR)/systemd/user
+	install -m 644 systemd/user/plasma-powerdevil.service $(DESTDIR)$(SYSCONFDIR)/systemd/user/
 
 	# sysctl and environment
 	install -d $(DESTDIR)$(PREFIX)/lib/sysctl.d

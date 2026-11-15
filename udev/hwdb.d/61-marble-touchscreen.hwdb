@@ -1,0 +1,9 @@
+# marble: the Goodix Berlin (GT9916) driver reports 0..10799 x 0..23999 with a
+# resolution of 10 units/mm, so libinput and the compositor believe the screen
+# is 1079 mm x 2399 mm and scale gesture distances accordingly. The 6.67"
+# 20:9 panel is 69.5 mm x 154.5 mm, i.e. 155 units/mm on both axes.
+evdev:name:Goodix Berlin Capacitive TouchScreen:*
+ EVDEV_ABS_00=::155
+ EVDEV_ABS_01=::155
+ EVDEV_ABS_35=::155
+ EVDEV_ABS_36=::155
